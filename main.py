@@ -125,3 +125,34 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
 
         random.shuffle(password)
         return ''.join(password)
+    
+    def ensure_minimum_characters(self, use_uppercase, use_digits, use_symbols, lowercase, uppercase, digits, symbols):
+        password = []
+        if use_uppercase:
+            password.append(secrets.choice(uppercase))
+        if use_digits:
+            password.append(secrets.choice(digits))
+        if use_symbols:
+            password.append(secrets.choice(symbols))
+        password.append(secrets.choice(lowercase))
+        return password
+
+    def copy_password(self):
+        password = self.password_output.text()
+        if password:
+            QtWidgets.QApplication.clipboard().setText(password)
+            QtWidgets.QMessageBox.information(self, "Copied", "Password copied to clipboard!")
+
+    def save_password(self):
+        password = self.password_output.text()
+        if password:
+            with open("generated_passwords.txt", "a") as file:
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                file.write(f"{timestamp}: {password}\n")
+            QtWidgets.QMessageBox.information(self, "Saved", "Password saved to 'generated_passwords.txt'.")
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication([])
+    window = PasswordGeneratorApp()
+    window.show()
+    app.exec_()
