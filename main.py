@@ -82,3 +82,11 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
             "exclude_similar": self.exclude_similar_checkbox.isChecked(),
             "memorable": self.memorable_checkbox.isChecked(),
         }
+
+        try:
+            password = self.create_password(length, **options)
+            self.password_output.setText(password)
+            self.copy_button.setEnabled(True)
+            self.save_button.setEnabled(True)
+        except ValueError as e:
+            QtWidgets.QMessageBox.warning(self, "Error", str(e))
