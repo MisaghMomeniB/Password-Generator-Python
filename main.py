@@ -60,3 +60,8 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
         layout.addWidget(self.exit_button)
 
         self.setLayout(layout)
+
+    def create_checkbox(self, text, checked=False):
+        checkbox = QtWidgets.QCheckBox(text)
+        checkbox.setChecked(checked)
+        return checkbox
