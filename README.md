@@ -17,8 +17,6 @@ A simple and secure password generator application built with Python and PyQt5. 
 
 ## Screenshots 📸
 
-![App Screenshot](screenshots/password-generator.png)
-
 ## Installation 💡
 
 ### Prerequisites
