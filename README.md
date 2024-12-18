@@ -75,17 +75,6 @@ We welcome contributions to improve the app! If you'd like to contribute:
 ## License 📄
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact 📬
-
-- **Author**: [Your Name](https://github.com/your-username)
-- **Email**: your.email@example.com
-
----
-
-Thanks for checking out the Password Generator App! Stay secure and keep your passwords strong! 💪🔐
-```
-
 ---
 
 This `README.md` is now entirely in English and covers everything related to the project, including features, installation, usage instructions, and how others can contribute. It uses emojis to make the text more engaging and visually appealing.
