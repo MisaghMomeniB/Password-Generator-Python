@@ -72,3 +72,13 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
         button.setEnabled(enabled)
         button.clicked.connect(callback)
         return button
+    
+    def generate_password(self):
+        length = self.length_input.value()
+        options = {
+            "use_uppercase": self.uppercase_checkbox.isChecked(),
+            "use_digits": self.digits_checkbox.isChecked(),
+            "use_symbols": self.symbols_checkbox.isChecked(),
+            "exclude_similar": self.exclude_similar_checkbox.isChecked(),
+            "memorable": self.memorable_checkbox.isChecked(),
+        }
