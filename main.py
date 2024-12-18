@@ -65,3 +65,10 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
         checkbox = QtWidgets.QCheckBox(text)
         checkbox.setChecked(checked)
         return checkbox
+    
+    def create_button(self, text, color, callback, enabled=True):
+        button = QtWidgets.QPushButton(text)
+        button.setStyleSheet(f"background-color: {color}; color: white; padding: 10px;")
+        button.setEnabled(enabled)
+        button.clicked.connect(callback)
+        return button
