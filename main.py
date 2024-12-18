@@ -90,3 +90,38 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
             self.save_button.setEnabled(True)
         except ValueError as e:
             QtWidgets.QMessageBox.warning(self, "Error", str(e))
+
+    def create_password(self, length, use_uppercase, use_digits, use_symbols, exclude_similar, memorable):
+        # Define character sets
+        lowercase_letters = string.ascii_lowercase
+        uppercase_letters = string.ascii_uppercase if use_uppercase else ''
+        digits = string.digits if use_digits else ''
+        symbols = string.punctuation if use_symbols else ''
+
+        # Exclude similar characters if needed
+        if exclude_similar:
+            similar_chars = "il1Lo0O"
+            lowercase_letters = ''.join(ch for ch in lowercase_letters if ch not in similar_chars)
+            uppercase_letters = ''.join(ch for ch in uppercase_letters if ch not in similar_chars)
+            digits = ''.join(ch for ch in digits if ch not in similar_chars)
+            symbols = ''.join(ch for ch in symbols if ch not in similar_chars)
+
+        all_characters = lowercase_letters + uppercase_letters + digits + symbols
+        if not all_characters:
+            raise ValueError("At least one character set must be enabled.")
+
+        # Generate password
+        password = []
+        if memorable:
+            words = ["apple", "banana", "cherry", "delta", "eagle", "falcon", "grape", "hero"]
+            while len(password) < length:
+                word = secrets.choice(words)
+                if len(password) + len(word) <= length:
+                    password.extend(word)
+        else:
+            password.extend(self.ensure_minimum_characters(use_uppercase, use_digits, use_symbols, lowercase_letters, uppercase_letters, digits, symbols))
+            while len(password) < length:
+                password.append(secrets.choice(all_characters))
+
+        random.shuffle(password)
+        return ''.join(password)
