@@ -1,4 +1,3 @@
-```markdown
 # Password Generator App 🔐✨
 
 A simple and secure password generator application built with Python and PyQt5. It allows users to generate strong, customizable passwords with various options, such as including uppercase letters, digits, symbols, and more. The app also supports generating memorable passwords, copying to clipboard, and saving generated passwords to a file for future use. 🛠️💻
