@@ -5,17 +5,18 @@ import base64
 import hashlib
 from datetime import datetime
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtGui import QColor
+
 
 class PasswordGeneratorApp(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setup_ui()
         self.password_history = []  # Store generated passwords
+        self.setup_ui()
 
     def setup_ui(self):
+        """Set up the user interface."""
         self.setWindowTitle("Advanced Password Generator")
-        self.resize(500, 350)
+        self.resize(500, 450)
 
         # Title
         title_label = QtWidgets.QLabel("Generate Secure and Memorable Passwords")
@@ -39,8 +40,8 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
         self.generate_button = self.create_button("Generate Password", "#4CAF50", self.generate_password)
         self.copy_button = self.create_button("Copy to Clipboard", "#008CBA", self.copy_password, enabled=False)
         self.save_button = self.create_button("Save Password to File", "#f44336", self.save_password, enabled=False)
-        self.exit_button = self.create_button("Exit", "#555555", self.close)
         self.reset_button = self.create_button("Reset", "#FF5722", self.reset_fields)
+        self.exit_button = self.create_button("Exit", "#555555", self.close)
 
         # Password strength indicator
         self.strength_label = QtWidgets.QLabel("Password Strength: Weak")
@@ -70,62 +71,64 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
         layout.addWidget(self.save_button)
         layout.addWidget(self.reset_button)
         layout.addWidget(self.exit_button)
-
         self.setLayout(layout)
 
     def create_checkbox(self, text, checked=False):
+        """Create and return a checkbox widget."""
         checkbox = QtWidgets.QCheckBox(text)
         checkbox.setChecked(checked)
         return checkbox
-    
+
     def create_button(self, text, color, callback, enabled=True):
+        """Create and return a styled button widget."""
         button = QtWidgets.QPushButton(text)
         button.setStyleSheet(f"background-color: {color}; color: white; padding: 10px;")
         button.setEnabled(enabled)
         button.clicked.connect(callback)
         return button
-    
-    def generate_password(self):
-        length = self.length_input.value()
-        options = {
-            "use_uppercase": self.uppercase_checkbox.isChecked(),
-            "use_digits": self.digits_checkbox.isChecked(),
-            "use_symbols": self.symbols_checkbox.isChecked(),
-            "exclude_similar": self.exclude_similar_checkbox.isChecked(),
-            "memorable": self.memorable_checkbox.isChecked(),
-            "passphrase": self.passphrase_checkbox.isChecked(),
-        }
 
+    def generate_password(self):
+        """Generate a password based on user-selected options."""
         try:
+            length = self.length_input.value()
+            options = {
+                "use_uppercase": self.uppercase_checkbox.isChecked(),
+                "use_digits": self.digits_checkbox.isChecked(),
+                "use_symbols": self.symbols_checkbox.isChecked(),
+                "exclude_similar": self.exclude_similar_checkbox.isChecked(),
+                "memorable": self.memorable_checkbox.isChecked(),
+                "passphrase": self.passphrase_checkbox.isChecked(),
+            }
             password = self.create_password(length, **options)
             self.password_output.setText(password)
-            self.copy_button.setEnabled(True)
-            self.save_button.setEnabled(True)
             self.check_password_strength(password)
             self.password_history.append(password)
+            self.copy_button.setEnabled(True)
+            self.save_button.setEnabled(True)
         except ValueError as e:
             QtWidgets.QMessageBox.warning(self, "Error", str(e))
 
     def create_password(self, length, use_uppercase, use_digits, use_symbols, exclude_similar, memorable, passphrase):
-        # Define character sets
+        """Generate a password with the specified options."""
         lowercase_letters = string.ascii_lowercase
-        uppercase_letters = string.ascii_uppercase if use_uppercase else ''
-        digits = string.digits if use_digits else ''
-        symbols = string.punctuation if use_symbols else ''
+        uppercase_letters = string.ascii_uppercase if use_uppercase else ""
+        digits = string.digits if use_digits else ""
+        symbols = string.punctuation if use_symbols else ""
 
-        # Exclude similar characters if needed
         if exclude_similar:
             similar_chars = "il1Lo0O"
-            lowercase_letters = ''.join(ch for ch in lowercase_letters if ch not in similar_chars)
-            uppercase_letters = ''.join(ch for ch in uppercase_letters if ch not in similar_chars)
-            digits = ''.join(ch for ch in digits if ch not in similar_chars)
-            symbols = ''.join(ch for ch in symbols if ch not in similar_chars)
+            lowercase_letters = "".join(ch for ch in lowercase_letters if ch not in similar_chars)
+            uppercase_letters = "".join(ch for ch in uppercase_letters if ch not in similar_chars)
+            digits = "".join(ch for ch in digits if ch not in similar_chars)
+            symbols = "".join(ch for ch in symbols if ch not in similar_chars)
 
         all_characters = lowercase_letters + uppercase_letters + digits + symbols
+
         if not all_characters:
             raise ValueError("At least one character set must be enabled.")
 
         password = []
+
         if passphrase:
             words = ["apple", "banana", "cherry", "delta", "eagle", "falcon", "grape", "hero"]
             while len(password) < length:
@@ -133,14 +136,18 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
                 if len(password) + len(word) <= length:
                     password.extend(word)
         else:
-            password.extend(self.ensure_minimum_characters(use_uppercase, use_digits, use_symbols, lowercase_letters, uppercase_letters, digits, symbols))
+            password.extend(self.ensure_minimum_characters(
+                use_uppercase, use_digits, use_symbols,
+                lowercase_letters, uppercase_letters, digits, symbols
+            ))
             while len(password) < length:
                 password.append(secrets.choice(all_characters))
 
         random.shuffle(password)
-        return ''.join(password)
+        return "".join(password)
 
     def ensure_minimum_characters(self, use_uppercase, use_digits, use_symbols, lowercase, uppercase, digits, symbols):
+        """Ensure at least one character from each selected category."""
         password = []
         if use_uppercase:
             password.append(secrets.choice(uppercase))
@@ -152,6 +159,7 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
         return password
 
     def check_password_strength(self, password):
+        """Check and display the strength of the generated password."""
         length = len(password)
         if length < 8:
             self.strength_label.setText("Password Strength: Weak")
@@ -161,12 +169,14 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
             self.strength_label.setText("Password Strength: Strong")
 
     def copy_password(self):
+        """Copy the generated password to the clipboard."""
         password = self.password_output.text()
         if password:
             QtWidgets.QApplication.clipboard().setText(password)
             QtWidgets.QMessageBox.information(self, "Copied", "Password copied to clipboard!")
 
     def save_password(self):
+        """Save the generated password to a file."""
         password = self.password_output.text()
         if password:
             with open("generated_passwords.txt", "a") as file:
@@ -175,6 +185,7 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
             QtWidgets.QMessageBox.information(self, "Saved", "Password saved to 'generated_passwords.txt'.")
 
     def reset_fields(self):
+        """Reset all fields to their default state."""
         self.password_output.clear()
         self.length_input.setValue(12)
         self.uppercase_checkbox.setChecked(True)
@@ -187,7 +198,6 @@ class PasswordGeneratorApp(QtWidgets.QWidget):
         self.copy_button.setEnabled(False)
         self.save_button.setEnabled(False)
 
-    # Add additional functionality for cloud storage, hashing, or Base64 conversion if required.
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
