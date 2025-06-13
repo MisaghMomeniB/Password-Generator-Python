@@ -1,82 +1,121 @@
-![github banner](https://github.com/user-attachments/assets/88075783-201d-4b71-afe4-143a3c4e08cf)
+# 🔐 Password Generator (Python)
 
-# Password Generator App 🔐✨
+A secure and customizable **strong password generator** script built in Python. Generate high-quality passwords with options for length, character types, and readability.
 
-A simple and secure password generator application built with Python and PyQt5. It allows users to generate strong, customizable passwords with various options, such as including uppercase letters, digits, symbols, and more. The app also supports generating memorable passwords, copying to clipboard, and saving generated passwords to a file for future use. 🛠️💻
-
-## Features 🌟
-
-- **Customizable Password Length**: Choose the length of the generated password from a range of 4 to 128 characters.
-- **Options for Character Sets**:
-  - Uppercase Letters (A-Z) 🅰️
-  - Digits (0-9) 🔢
-  - Symbols (e.g., !, @, #, $) 💥
-  - Exclude Similar-Looking Characters (like '1' and 'I') 🚫
-- **Generate Memorable Passwords**: Create passwords using easy-to-remember words 🍎🍌
-- **Copy to Clipboard**: Copy your generated password with a single click 📋
-- **Save to File**: Store generated passwords along with a timestamp for future reference 🗂️
-- **Simple, Clean UI**: A user-friendly interface built with PyQt5 for seamless interaction 🖥️
-
-## Screenshots 📸
-
-## Installation 💡
-
-### Prerequisites
-
-To run the application, you need to have Python installed on your machine, as well as the required dependencies.
-
-1. **Install Python**: Make sure you have Python 3.x installed. You can download it from [here](https://www.python.org/downloads/).
-2. **Install Dependencies**:
-   ```bash
-   pip install PyQt5
-   ```
-
-### Running the App 🚀
-
-1. Clone this repository to your local machine:
-   ```bash
-   git clone https://github.com/your-username/password-generator-app.git
-   cd password-generator-app
-   ```
-
-2. Run the app:
-   ```bash
-   python password_generator_app.py
-   ```
-
-## How to Use 🎯
-
-1. **Password Length**: Select the desired password length (default: 12).
-2. **Character Options**:
-   - Enable/Disable options for uppercase letters, digits, and symbols.
-   - Optionally exclude similar-looking characters (e.g., '1' and 'I').
-   - Choose to generate a memorable password (words like "apple", "banana").
-3. **Generate Password**: Click on the "Generate Password" button to create a secure password.
-4. **Copy Password**: Copy the generated password to your clipboard using the "Copy to Clipboard" button.
-5. **Save Password**: Save the password to a text file for future reference by clicking the "Save Password to File" button.
-6. **Exit**: Close the application when you're done.
-
-## Example Use Case 📜
-
-1. Set password length to 16 characters.
-2. Enable uppercase letters, digits, and symbols.
-3. Generate the password.
-4. Copy it to your clipboard for immediate use.
-5. Optionally save it to a file for later reference.
-
-## Contributing 🤝
-
-We welcome contributions to improve the app! If you'd like to contribute:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature-name`).
-3. Make your changes and commit (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature/your-feature-name`).
-5. Open a pull request.
-
-## License 📄
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ---
 
-This `README.md` is now entirely in English and covers everything related to the project, including features, installation, usage instructions, and how others can contribute. It uses emojis to make the text more engaging and visually appealing.
+## 📋 Table of Contents
+
+1. [Overview](#overview)  
+2. [Features](#features)  
+3. [Requirements](#requirements)  
+4. [Installation](#installation)  
+5. [Usage](#usage)  
+6. [Code Structure](#code-structure)  
+7. [Security Notes](#security-notes)  
+8. [Contributing](#contributing)  
+9. [License](#license)
+
+---
+
+## 💡 Overview
+
+This Python script lets users quickly generate random, secure passwords via CLI. It’s customizable and ideal for both personal use and integration into larger automation workflows.
+
+---
+
+## ✅ Features
+
+- Customizable **length** (default: 16 characters)  
+- Mix of **uppercase**, **lowercase**, **digits**, and **symbols**  
+- Option to **exlude similar-looking characters** (e.g., `O`, `0`, `l`, `1`)  
+- Choice to **avoid ambiguous symbols** for better readability  
+- Easily embeddable as a function or module in other Python projects
+
+---
+
+## 🧾 Requirements
+
+- **Python 3.7+**  
+- No external dependencies—just the Python standard library
+
+---
+
+## ⚙️ Installation
+
+```bash
+git clone https://github.com/MisaghMomeniB/Password-Generator-Python.git
+cd Password-Generator-Python
+python3 --version  # ensure Python ≥3.7
+````
+
+---
+
+## 🚀 Usage
+
+### CLI Example
+
+Run the script directly with customizable options:
+
+```bash
+python3 password_generator.py --length 20 --no-ambiguous --no-similar
+```
+
+**Options:**
+
+* `--length <int>`: Set password length (default `16`)
+* `--no-ambiguous`: Exclude punctuation that’s hard to read
+* `--no-similar`: Skip characters like `0`, `O`, `l`, `1`
+* `--count <int>`: Generate multiple passwords in one run
+
+### As a Python Module
+
+Import `generate_password()` in your code:
+
+```python
+from password_generator import generate_password
+
+pwd = generate_password(length=24, no_ambiguous=True)
+print("Generated password:", pwd)
+```
+
+---
+
+## 📁 Code Structure
+
+```
+/ (root)
+├── password_generator.py   # CLI script & core logic
+└── README.md               # This file
+```
+
+* `generate_password()`: main function with customizable options
+* `if __name__ == "__main__":` block handles CLI parsing via `argparse`
+
+---
+
+## 🔒 Security Notes
+
+* Uses `secrets.SystemRandom()` for cryptographic-quality randomness
+* Ensures a mix of character types by design
+* Avoids insecure `random` module
+
+---
+
+## 🤝 Contributing
+
+Improvements welcome! Suggested enhancements:
+
+* Add **pronounceable password** mode
+* Integrate **password strength estimation**
+* GUI or web-based interface
+
+To contribute:
+
+1. Fork the repository
+2. Create a new branch (`feature/...`)
+3. Submit a detailed pull request
+
+---
+
+## 📄 License
